@@ -1,36 +1,28 @@
 {
-  "todos": [
+  "posts": [
     {
       "id": 1,
-      "todo": "Brush my teeth"
+      "text": "Brush my teeth"
     },
     {
       "id": 2,
-      "todo": "Go to work"
+      "text": "Go to work"
     },
     {
       "id": 3,
-      "todo": "Wash my clothes"
+      "text": "hjgugjhkjhk"
     },
     {
-      "todo": "Jump on a call",
-      "id": 4
+      "id": 4,
+      "text": "Code tonight"
     },
     {
-      "todo": "Learn redux",
-      "id": 5
+      "id": 5,
+      "text": "Go to work tomorrow"
     },
     {
-      "todo": "step",
-      "id": 6
-    },
-    {
-      "todo": "polaroid",
-      "id": 7
-    },
-    {
-      "todo": "shutdown my pc",
-      "id": 8
+      "id": 6,
+      "text": "Eat breakfast"
     }
   ],
   "users": [

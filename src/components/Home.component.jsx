@@ -1,96 +1,67 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-// components
-import Input from './Input.component.jsx';
-import ToDo from './ToDo.component.jsx';
-import Button from './Button.component.jsx';
-
-// actions
-import { getAllTodos, addTodo } from '../actions/todo.action';
-
+import React, { Component }  from 'react';
+import { connect } from 'react-redux'
+import { getAllPosts, addNewPost } from '../actions/todo.action';
 
 class Home extends Component {
-    constructor() {
-        super();
-        this.state = {
-            todo: '',
-            todos: [],
-            displayingTodos: [],
-            offset: 0,
-            disabled: false
+    constructor(props) {
+        super(props)
+        this.state ={
+            text: ''
         }
-        this.addTodo = this.addTodo.bind(this);
     }
 
-    async componentDidMount() {
-        await this.props.getAllTodos();
+    componentDidMount() {
+        this.props.getAllPosts()
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { todos } = nextProps;
-        const { offset } = this.state;
-        this.setState({ todos, displayingTodos: [todos[offset]]  });
-    }
-
-    onChange = event => {
+    onChange = (e) => {
         this.setState({
-            [event.target.name]: event.target.value
-        });
+            [e.target.name]: e.target.value
+        })
     }
 
-    loadmore = () => {
-        const { displayingTodos, offset, todos } = this.state;
-        const newOffset = offset + 1;
-        console.log(newOffset, todos.length, 'loladl');
-        if (newOffset < todos.length) {
-            this.setState({
-                displayingTodos: [
-                    todos[newOffset],
-                    ...displayingTodos
-                ],
-                offset: newOffset
-            });
-            return false;
+    submitPost = () => {
+        const { text } = this.state;
+        if (text) {
+            const id = this.props.posts.length + 1;
+            this.props.addNewPost({
+                id,
+                text
+            })
         }
-        this.setState({
-            disabled: true
-        });
-        return false;
     }
 
-    async addTodo() {
-        const { todo } = this.state;
-        await this.props.addTodo(todo);
+    allposts = () => {
+        const posts = this.props.posts
+        return posts.map(post => (
+            <div key={post.id}>
+                <span className="id">{post.id}. </span>
+                <span className="text">{post.text}</span>
+            </div>
+        ))
     }
 
     render() {
         return (
             <div>
-                <Input name="todo" value={this.state.todo} onChange={this.onChange} />
-                <Button onClick={this.addTodo} label="Add ToDo" />
-                {
-                    this.props.todos ? <ToDo todos={this.state.displayingTodos} /> : <p>Loading....</p>
-                }
-                <button onClick={this.loadmore} disabled={this.state.disabled}>Load More</button>
+                <h1>Hello world! These are my posts!</h1>
+                <div>
+                    <input
+                        type="text"
+                        name="text"
+                        onChange={this.onChange}
+                        value={this.state.text}
+                    />
+                    <button onClick={this.submitPost}>Submit</button>
+                </div>
+                {this.allposts()}
             </div>
         )
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getAllTodos: () => dispatch(getAllTodos()),
-        addTodo: (todo) => {
-            return dispatch(addTodo(todo))
-        }
-    };
-}
+const mapStateToProps = state => ({
+    ...state
+})
 
-const mapStateToProps = (state) => {
-    return {
-        todos: state.todos
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, { getAllPosts, addNewPost })(Home);

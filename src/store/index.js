@@ -13,7 +13,7 @@ const configureStore = () => {
         initialState,
         compose(
             applyMiddleware(thunk),
-            window.devToolsExtension? window.devToolsExtension() : (empty) => empty
+            window.devToolsExtension ? window.devToolsExtension() : (empty) => empty
         )
     );
 }

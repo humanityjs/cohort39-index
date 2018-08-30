@@ -1,32 +1,35 @@
 import axios from 'axios';
 
 import {
-    GET_TODOS,
-    ADD_TODO
+    GET_POSTS,
+    ADD_NEW_POST
 } from '../utils/types';
 
 
 const BASE_URL = 'http://localhost:4500';
 
-const getTodosAction = (payload) => ({
-    type: GET_TODOS,
-    payload
-});
+const setPostsToState = (posts) => ({
+    type: GET_POSTS,
+    posts
+})
 
-const addTodoAction = (payload) => ({
-    type: ADD_TODO,
-    payload
-});
+const setNewPostToState = (post) => ({
+    type: ADD_NEW_POST,
+    post
+})
 
-export const getAllTodos = () => (dispatch) => axios
-    .get(`${BASE_URL}/todos`)
-    .then(res => {
-        return dispatch(getTodosAction(res.data));
-    });
+export const getAllPosts = () => {
+    return (dispatch) => {
+        return axios.get(`${BASE_URL}/posts`).then(res => {
+            return dispatch(setPostsToState(res.data))
+        })
+    }
+}
 
-
-export const addTodo = todo => (dispatch) => axios
-    .post(`${BASE_URL}/todos`, { todo })
-    .then(res => {
-        return dispatch(addTodoAction(res.data));
-    });
+export const addNewPost = (post) => {
+    return (dispatch) => {
+        return axios.post(`${BASE_URL}/posts`, post).then(res => {
+            dispatch(setNewPostToState(res.data))
+        })
+    }
+}
